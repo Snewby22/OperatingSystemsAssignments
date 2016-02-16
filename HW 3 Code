@@ -71,3 +71,32 @@ syscall kcheckc(void)
     
     return 0; //didn't work but something printed out from calling it. Not sure how. 
 }
+
+
+testcases
+
+void callCheckTrue();
+void callCheckFalse(); //add these to top
+
+add callCheckTrue();
+and callCheckFalse(); before last TEST END in testcases
+
+void callCheckTrue()
+{
+  volatile struct pl011_uart_csreg *regptr;
+  regptr = (struct pl011_uart_csreg *)0x20201000;
+  
+  regptr->dr = 'A';
+  
+  int returnValue = kcheckc();
+  kprintf("Value returned for callCheckTrue is %d\r\n\", returnValue);
+}
+
+void callCheckFalse()
+{
+  volatile struct pl011_uart_csreg *regptr;
+  regptr = (struct pl011_uart_csreg *)0x20201000;
+  
+  int returnValue = kcheckc();
+  kprintf("Value returned for callCheckFalse is %d\r\n", returnValue);
+}
